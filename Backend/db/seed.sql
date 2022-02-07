@@ -3,7 +3,6 @@ DROP DATABASE IF EXISTS docApp;
 
 CREATE DATABASE docApp;
 
-\c appointments
 
 CREATE TABLE doctors (
     doc_id SERIAL PRIMARY KEY,

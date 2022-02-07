@@ -1,7 +1,11 @@
 {
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "debug": "^2.6.9",
     "express": "^4.17.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15",
     "pg-promise": "^10.11.1",
     "postgres": "^1.0.2",
     "react-datepicker": "^4.6.0"

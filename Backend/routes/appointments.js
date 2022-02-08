@@ -1,7 +1,7 @@
 const express = require ('express')
 const router = express.Router()
 const db = require('../db/db')
-const apointmentsQueries = require ('../queries/appointmentsQueries')
+
 
 router.get('/all', async (req,res) => {
     try{
@@ -20,20 +20,37 @@ router.get('/all', async (req,res) => {
         }
 })
 
+router.get('/doctors/:id', async (req, res) => {
+    let id = req.params.id
+    try {
+        let appointments = await db.any(`SELECT * FROM appointments WHERE doctor_id = ${id}`);
+        res.json({
+            payload: appointments,
+            message: `success. retrieved all appointments for this doctor`
+        });
+    } catch (error) {
+        res.status(500);
+        res.json({
+            message: `Error. Something went wrong!`
+        })
+        console.log(error);
+    }
+ })
+
 router.post ('/newAppointment', async (req,res) =>{
-    let insertQuery = `INSERT INTO appointments (patient_id, doctor_id)
-        VALUES ($1,$2,$3);`  
+    let insertQuery = `INSERT INTO appointments (doctor_id, patient)
+        VALUES ($1,$2);`  
     
-    let patient_id = req.body.patient_id
     let doctor_id = req.body.doctor_id
+    let patient = req.body.patient
 
     let body = {
-        patient_id: patient_id,
-        doctor_id: doctor_id
+        doctor_id: doctor_id,
+        patient: patient
     }
 
     try{
-        await db.none(insertQuery,[patient_id, doctor_id])
+        await db.none(insertQuery,[doctor_id,patient])
         res,json ({
             status : 'success',
             message: 'Appointment created',
@@ -47,3 +64,4 @@ router.post ('/newAppointment', async (req,res) =>{
     }
 })
 
+module.exports = router;
